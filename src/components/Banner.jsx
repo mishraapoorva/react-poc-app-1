@@ -1,8 +1,16 @@
-import React, { useState } from "react";
-import { Bell, ChevronDown, User } from "lucide-react";
+import React, { useRef } from "react";
+import { Bell, User } from "lucide-react";
+import { Menu } from 'primereact/menu';
+import { Button } from 'primereact/button';
 
 export default function Banner() {
-  const [open, setOpen] = useState(false);
+  const menu = useRef(null);
+  const items = [
+    { label: 'Profile', icon: 'pi pi-fw pi-user' },
+    { label: 'Settings', icon: 'pi pi-fw pi-cog' },
+    { separator: true },
+    { label: 'Logout', icon: 'pi pi-fw pi-power-off' }
+  ];
 
   return (
     <header className="sticky top-0 z-20 border-b border-gray-200 bg-white/80 backdrop-blur">
@@ -19,25 +27,19 @@ export default function Banner() {
             <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-red-500" />
           </button>
 
-          <div className="relative">
-            <button
-              onClick={() => setOpen(!open)}
+          <div className="card flex justify-content-center">
+            <Menu model={items} popup ref={menu} id="popup_menu" />
+            <Button
+              onClick={(event) => menu.current.toggle(event)}
+              aria-controls="popup_menu"
+              aria-haspopup
               className="flex items-center gap-2 px-3 py-2 border rounded-xl bg-white hover:shadow"
             >
               <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-100">
                 <User className="h-5 w-5" />
               </div>
               <span className="text-sm font-medium">Apoorva</span>
-              <ChevronDown className="h-4 w-4" />
-            </button>
-
-            {open && (
-              <div className="absolute right-0 mt-2 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl">
-                <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50">Profile</button>
-                <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50">Settings</button>
-                <button className="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">Logout</button>
-              </div>
-            )}
+            </Button>
           </div>
         </div>
       </div>
