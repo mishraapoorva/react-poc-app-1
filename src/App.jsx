@@ -4,6 +4,8 @@ import ChatbotSection from "./components/ChatbotSection";
 import SuiteCards from "./components/SuiteCards";
 import Table from "./components/Table";
 import QuickLinks from "./components/QuickLinks";
+import { Divider } from 'primereact/divider';
+import { Card } from 'primereact/card';
 import { FAVORITES } from "./data/favorites";
 import { RECENTS } from "./data/recents";
 
@@ -12,18 +14,16 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <Banner />
 
-      <main className="flex-1 mx-auto max-w-7xl px-6 py-8">
+      <main className="flex-1 mx-auto max-w-7xl px-6 py-8 space-y-6">
         <ChatbotSection />
-
         <SuiteCards />
-
-        <div className="my-10 h-px w-full bg-gray-200" />
-
-        <section>
-          <div className="mb-4 flex items-center gap-2">
+        <Divider />
+        <Card title={
+          <div className="flex items-center gap-2">
             <i className="pi pi-star" />
-            <h2 className="text-lg font-semibold">My Favorite Pages</h2>
+            <h2 className="text-lg font-semibold m-0">My Favorite Pages</h2>
           </div>
+        }>
           <Table
             columns={[
               { key: "title", header: "Title" },
@@ -39,15 +39,14 @@ function App() {
             ]}
             rows={FAVORITES}
           />
-        </section>
-
-        <div className="my-10 h-px w-full bg-gray-200" />
-
-        <section>
-          <div className="mb-4 flex items-center gap-2">
+        </Card>
+        <Divider />
+        <Card title={
+          <div className="flex items-center gap-2">
             <i className="pi pi-clock" />
-            <h2 className="text-lg font-semibold">Recently Visited</h2>
+            <h2 className="text-lg font-semibold m-0">Recently Visited</h2>
           </div>
+        }>
           <Table
             columns={[
               { key: "title", header: "Title" },
@@ -63,10 +62,8 @@ function App() {
             ]}
             rows={RECENTS}
           />
-        </section>
-
-        <div className="my-10 h-px w-full bg-gray-200" />
-
+        </Card>
+        <Divider />
         <QuickLinks />
       </main>
 

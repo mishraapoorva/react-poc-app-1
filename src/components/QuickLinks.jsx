@@ -58,7 +58,7 @@ export default function QuickLinks() {
     return (
       <div className="col-12 md:col-4">
         <a href={item.url} className="no-underline">
-          <Card className="hover:shadow-lg">
+          <Card className="hover:shadow-lg h-full">
             <div className="flex items-center gap-3">
               <i className={`${iconMap[item.type]} text-2xl text-gray-500`} />
               <div>

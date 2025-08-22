@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
 import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
+import { Toolbar } from 'primereact/toolbar';
+import { Avatar } from 'primereact/avatar';
+import { Tag } from 'primereact/tag';
 
 export default function Banner() {
   const menu = useRef(null);
@@ -11,37 +14,33 @@ export default function Banner() {
     { label: 'Logout', icon: 'pi pi-fw pi-power-off' }
   ];
 
+  const startContent = (
+    <div className="flex items-center gap-3">
+      <div className="h-9 w-9 rounded-2xl bg-primary" />
+      <h1 className="text-xl font-bold m-0">SEN Platform</h1>
+      <Tag value="POC" />
+    </div>
+  );
+
+  const endContent = (
+    <div className="flex items-center gap-3">
+      <Button icon="pi pi-bell" rounded text severity="secondary" aria-label="Notifications" />
+      <Menu model={items} popup ref={menu} id="popup_menu" />
+      <Button
+        onClick={(event) => menu.current.toggle(event)}
+        aria-controls="popup_menu"
+        aria-haspopup
+        className="flex items-center gap-2"
+      >
+        <Avatar icon="pi pi-user" shape="circle" />
+        <span className="text-sm font-medium">Apoorva</span>
+      </Button>
+    </div>
+  );
+
   return (
-    <header className="sticky top-0 z-20 border-b border-gray-200 bg-white/80 backdrop-blur">
-      <div className="mx-auto max-w-7xl flex justify-between items-center px-6 py-4">
-        <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-2xl bg-blue-600" />
-          <h1 className="text-xl font-bold">SEN Platform</h1>
-          <span className="ml-2 inline-flex items-center rounded-full border border-blue-200 px-2 py-0.5 text-xs text-blue-700">POC</span>
-        </div>
-
-        <div className="flex gap-3 items-center">
-          <button className="relative h-10 w-10 flex items-center justify-center border rounded-xl bg-white hover:shadow">
-            <i className="pi pi-bell" />
-            <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-red-500" />
-          </button>
-
-          <div className="card flex justify-content-center">
-            <Menu model={items} popup ref={menu} id="popup_menu" />
-            <Button
-              onClick={(event) => menu.current.toggle(event)}
-              aria-controls="popup_menu"
-              aria-haspopup
-              className="flex items-center gap-2 px-3 py-2 border rounded-xl bg-white hover:shadow"
-            >
-              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-100">
-                <i className="pi pi-user" />
-              </div>
-              <span className="text-sm font-medium">Apoorva</span>
-            </Button>
-          </div>
-        </div>
-      </div>
+    <header className="sticky top-0 z-20">
+      <Toolbar start={startContent} end={endContent} className="px-6 py-4" />
     </header>
   );
 }

@@ -8,7 +8,7 @@ const ChatBubble = ({ role, text }) => (
   <div className={`flex ${role === "user" ? "justify-end" : "justify-start"}`}>
     <div
       className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm shadow ${
-        role === "user" ? "bg-blue-600 text-white" : "bg-white border border-gray-200"
+        role === "user" ? "bg-primary text-primary-contrast" : "bg-white border border-gray-200"
       }`}
     >
       {text}

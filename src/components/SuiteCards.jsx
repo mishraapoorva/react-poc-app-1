@@ -31,7 +31,7 @@ export default function SuiteCards() {
         )}
       </div>
 
-      <div className="grid">
+      <div className="grid gap-4">
         {SUITES.map((suite) => (
           <div key={suite.key} className="col-12 md:col-6 lg:col-3">
             <Card
@@ -40,7 +40,7 @@ export default function SuiteCards() {
               header={<img alt={suite.title} src={suite.image} />}
               footer={<span>Apps: {suite.apps.length}</span>}
               onClick={() => setSelectedSuite(suite)}
-              className="cursor-pointer hover:shadow-lg"
+              className="cursor-pointer hover:shadow-lg h-full"
             />
           </div>
         ))}

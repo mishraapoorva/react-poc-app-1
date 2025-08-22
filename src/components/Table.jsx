@@ -4,12 +4,10 @@ import { Column } from 'primereact/column';
 
 export default function Table({ columns = [], rows = [] }) {
   return (
-    <div className="card">
-      <DataTable value={rows} tableStyle={{ minWidth: '50rem' }}>
-        {columns.map((col, i) => (
-          <Column key={col.key} field={col.key} header={col.header} body={col.render} />
-        ))}
-      </DataTable>
-    </div>
+    <DataTable value={rows} tableStyle={{ minWidth: '50rem' }}>
+      {columns.map((col, i) => (
+        <Column key={col.key} field={col.key} header={col.header} body={col.render} />
+      ))}
+    </DataTable>
   );
 }
