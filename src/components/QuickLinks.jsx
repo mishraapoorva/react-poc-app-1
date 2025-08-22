@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
@@ -7,6 +7,7 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { SelectButton } from 'primereact/selectbutton';
 import { TabView, TabPanel } from 'primereact/tabview';
+import { DataView } from 'primereact/dataview';
 import { FAVORITES } from "../data/favorites";
 import { RECENTS } from "../data/recents";
 import { BLOG } from "../data/blog";
@@ -33,19 +34,23 @@ const iconMap = {
 };
 
 export default function QuickLinks() {
-  const [globalFilter, setGlobalFilter] = useState('');
+  const [filter, setFilter] = useState('');
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [view, setView] = useState("grid");
 
-  const getFilteredData = () => {
+  const filteredData = useMemo(() => {
     const tabType = ["recent", "favorite", "blog"][activeTabIndex];
-    return QUICK_LINKS.filter((x) => x.type === tabType);
-  };
-
-  const itemTemplate = (item) => {
-    if (view === 'list') {
-      return null; // Will be handled by standard columns
+    const data = QUICK_LINKS.filter((x) => x.type === tabType);
+    if (!filter) {
+      return data;
     }
+    return data.filter(item =>
+      item.title.toLowerCase().includes(filter.toLowerCase()) ||
+      item.suite.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [activeTabIndex, filter]);
+
+  const gridItemTemplate = (item) => {
     return (
       <div className="col-12 md:col-6 lg:col-3 p-2">
         <a href={item.url} className="no-underline h-full">
@@ -73,45 +78,37 @@ export default function QuickLinks() {
       <div className="flex items-center gap-2">
         <IconField iconPosition="left">
           <InputIcon className="pi pi-search" />
-          <InputText value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+          <InputText value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Search..." />
         </IconField>
         <SelectButton value={view} onChange={(e) => setView(e.value)} options={viewOptions} itemTemplate={viewTemplate} />
       </div>
     </div>
   );
 
+  const renderContent = () => {
+    if (view === 'grid') {
+      return <DataView value={filteredData} itemTemplate={gridItemTemplate} layout="grid" />;
+    }
+    return (
+      <DataTable value={filteredData} dataKey="url">
+        <Column field="title" header="Title" />
+        <Column field="suite" header="Suite" />
+        <Column header="Open" body={(r) => <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">Open <i className="pi pi-external-link" /></a>} />
+      </DataTable>
+    );
+  };
+
   return (
     <Card title={header}>
       <TabView activeIndex={activeTabIndex} onTabChange={(e) => setActiveTabIndex(e.index)}>
         <TabPanel header="Recent">
-          <DataTable value={getFilteredData()} globalFilter={globalFilter} dataKey="url"
-            rowClassName={() => view === 'grid' ? 'grid' : ''}
-            bodyClassName={() => view === 'grid' ? 'p-0' : ''}
-            itemTemplate={view === 'grid' ? itemTemplate : undefined}>
-            {view === 'list' && <Column field="title" header="Title" />}
-            {view === 'list' && <Column field="suite" header="Suite" />}
-            {view === 'list' && <Column header="Open" body={(r) => <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">Open <i className="pi pi-external-link" /></a>} />}
-          </DataTable>
+          {renderContent()}
         </TabPanel>
         <TabPanel header="Favorites">
-        <DataTable value={getFilteredData()} globalFilter={globalFilter} dataKey="url"
-            rowClassName={() => view === 'grid' ? 'grid' : ''}
-            bodyClassName={() => view === 'grid' ? 'p-0' : ''}
-            itemTemplate={view === 'grid' ? itemTemplate : undefined}>
-            {view === 'list' && <Column field="title" header="Title" />}
-            {view === 'list' && <Column field="suite" header="Suite" />}
-            {view === 'list' && <Column header="Open" body={(r) => <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">Open <i className="pi pi-external-link" /></a>} />}
-          </DataTable>
+          {renderContent()}
         </TabPanel>
         <TabPanel header="Blog">
-        <DataTable value={getFilteredData()} globalFilter={globalFilter} dataKey="url"
-            rowClassName={() => view === 'grid' ? 'grid' : ''}
-            bodyClassName={() => view === 'grid' ? 'p-0' : ''}
-            itemTemplate={view === 'grid' ? itemTemplate : undefined}>
-            {view === 'list' && <Column field="title" header="Title" />}
-            {view === 'list' && <Column field="suite" header="Suite" />}
-            {view === 'list' && <Column header="Open" body={(r) => <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">Open <i className="pi pi-external-link" /></a>} />}
-          </DataTable>
+          {renderContent()}
         </TabPanel>
       </TabView>
     </Card>
