@@ -23,6 +23,10 @@ const viewOptions = [
   { icon: 'pi pi-bars', value: 'list' }
 ];
 
+const viewTemplate = (option) => {
+    return <i className={option.icon} />;
+};
+
 const iconMap = {
   favorite: "pi pi-star",
   recent: "pi pi-clock",
@@ -99,7 +103,7 @@ export default function QuickLinks() {
           <InputIcon className="pi pi-search" />
           <InputText value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search..." />
         </IconField>
-        <SelectButton value={view} onChange={(e) => setView(e.value)} options={viewOptions} />
+        <SelectButton value={view} onChange={(e) => setView(e.value)} options={viewOptions} itemTemplate={viewTemplate} />
       </div>
     </div>
   );
