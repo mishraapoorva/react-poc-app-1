@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MessageCircle, Send, Loader2 } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 
 const ChatBubble = ({ role, text }) => (
   <div className={`flex ${role === "user" ? "justify-end" : "justify-start"}`}>
@@ -53,7 +53,7 @@ export default function ChatbotSection() {
     <section className="mb-6">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <MessageCircle className="h-5 w-5" />
+          <img src="/chatbot-logo.svg" alt="Chatbot Logo" className="h-5 w-5" />
           <h2 className="text-lg font-semibold">SEN Assistant</h2>
           <span className="text-xs text-gray-500">(prototype)</span>
         </div>

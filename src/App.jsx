@@ -1,6 +1,7 @@
 import React from "react";
 import Banner from "./components/Banner";
 import ChatbotSection from "./components/ChatbotSection";
+import Widgets from "./components/Widgets";
 import SuiteCards from "./components/SuiteCards";
 import Table from "./components/Table";
 import QuickLinks from "./components/QuickLinks";
@@ -15,6 +16,8 @@ function App() {
 
       <main className="flex-1 mx-auto max-w-7xl px-6 py-8">
         <ChatbotSection />
+
+        <Widgets />
 
         <SuiteCards />
 
