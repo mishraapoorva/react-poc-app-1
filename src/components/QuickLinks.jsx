@@ -57,7 +57,7 @@ export default function QuickLinks() {
   const gridItemTemplate = (item) => {
     return (
       <div className="col-12 md:col-4">
-        <a href={item.url} className="no-underline">
+        <a href={item.url} className="no-underline h-full">
           <Card className="hover:shadow-lg h-full">
             <div className="flex items-center gap-3">
               <i className={`${iconMap[item.type]} text-2xl text-gray-500`} />
@@ -108,17 +108,23 @@ export default function QuickLinks() {
     </div>
   );
 
+  const dataViewLayout = (
+    <div className="grid gap-4">
+      <DataView value={quickResults} itemTemplate={gridItemTemplate} layout="grid" />
+    </div>
+  );
+
   return (
     <Card title={header}>
       <TabView activeIndex={activeTabIndex} onTabChange={(e) => setActiveTabIndex(e.index)}>
         <TabPanel header="Recent">
-          {view === 'grid' ? <DataView value={quickResults} itemTemplate={gridItemTemplate} layout="grid" /> : listLayout}
+          {view === 'grid' ? dataViewLayout : listLayout}
         </TabPanel>
         <TabPanel header="Favorites">
-          {view === 'grid' ? <DataView value={quickResults} itemTemplate={gridItemTemplate} layout="grid" /> : listLayout}
+          {view === 'grid' ? dataViewLayout : listLayout}
         </TabPanel>
         <TabPanel header="Blog">
-          {view === 'grid' ? <DataView value={quickResults} itemTemplate={gridItemTemplate} layout="grid" /> : listLayout}
+          {view === 'grid' ? dataViewLayout : listLayout}
         </TabPanel>
       </TabView>
     </Card>

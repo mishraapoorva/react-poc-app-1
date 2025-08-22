@@ -31,18 +31,17 @@ export default function SuiteCards() {
         )}
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid flex flex-wrap gap-4">
         {SUITES.map((suite) => (
-          <div key={suite.key} className="col-12 md:col-6 lg:col-3">
             <Card
+              key={suite.key}
               title={suite.title}
               subTitle={suite.description}
               header={<img alt={suite.title} src={suite.image} />}
               footer={<span>Apps: {suite.apps.length}</span>}
               onClick={() => setSelectedSuite(suite)}
-              className="cursor-pointer hover:shadow-lg h-full"
+              className="col-12 md:col-6 lg:col-3 cursor-pointer hover:shadow-lg h-full"
             />
-          </div>
         ))}
       </div>
 
