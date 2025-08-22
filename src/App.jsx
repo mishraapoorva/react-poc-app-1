@@ -14,7 +14,7 @@ function App() {
     <div className="min-h-screen flex flex-col">
       <Banner />
 
-      <main className="flex-1 mx-auto max-w-7xl px-6 py-8 space-y-6">
+      <main className="flex-1 mx-auto px-6 py-8 space-y-6">
         <ChatbotSection />
         <SuiteCards />
         <Divider />

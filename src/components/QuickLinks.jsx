@@ -1,16 +1,15 @@
-import React, { useMemo, useState } from "react";
-import Fuse from "fuse.js";
-import Table from "./Table";
-import { FAVORITES } from "../data/favorites";
-import { RECENTS } from "../data/recents";
-import { BLOG } from "../data/blog";
+import React, { useState } from "react";
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { SelectButton } from 'primereact/selectbutton';
 import { TabView, TabPanel } from 'primereact/tabview';
-import { DataView } from 'primereact/dataview';
+import { FAVORITES } from "../data/favorites";
+import { RECENTS } from "../data/recents";
+import { BLOG } from "../data/blog";
 
 const QUICK_LINKS = [
   ...FAVORITES.map((f) => ({ type: "favorite", title: f.title, url: f.path, suite: f.suite })),
@@ -34,29 +33,21 @@ const iconMap = {
 };
 
 export default function QuickLinks() {
-  const [q, setQ] = useState("");
+  const [globalFilter, setGlobalFilter] = useState('');
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [view, setView] = useState("grid");
 
-  const fuse = useMemo(() => {
-    return new Fuse(QUICK_LINKS, {
-      includeScore: true,
-      threshold: 0.38,
-      keys: ["title", "suite", "type"],
-    });
-  }, []);
-
-  const quickResults = useMemo(() => {
+  const getFilteredData = () => {
     const tabType = ["recent", "favorite", "blog"][activeTabIndex];
-    const base = QUICK_LINKS.filter((x) => x.type === tabType);
-    if (!q.trim()) return base;
-    const results = fuse.search(q).map((r) => r.item);
-    return results.filter((x) => x.type === tabType);
-  }, [q, activeTabIndex, fuse]);
+    return QUICK_LINKS.filter((x) => x.type === tabType);
+  };
 
-  const gridItemTemplate = (item) => {
+  const itemTemplate = (item) => {
+    if (view === 'list') {
+      return null; // Will be handled by standard columns
+    }
     return (
-      <div className="col-12 md:col-4">
+      <div className="col-12 md:col-6 lg:col-3 p-2">
         <a href={item.url} className="no-underline h-full">
           <Card className="hover:shadow-lg h-full">
             <div className="flex items-center gap-3">
@@ -73,25 +64,6 @@ export default function QuickLinks() {
     );
   };
 
-  const listLayout = (
-    <Table
-      columns={[
-        { key: "title", header: "Title" },
-        { key: "suite", header: "Suite" },
-        {
-          key: "open",
-          header: "Open",
-          render: (r) => (
-            <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">
-              Open <i className="pi pi-external-link" />
-            </a>
-          ),
-        },
-      ]}
-      rows={quickResults}
-    />
-  );
-
   const header = (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-2">
@@ -101,16 +73,10 @@ export default function QuickLinks() {
       <div className="flex items-center gap-2">
         <IconField iconPosition="left">
           <InputIcon className="pi pi-search" />
-          <InputText value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search..." />
+          <InputText value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
         </IconField>
         <SelectButton value={view} onChange={(e) => setView(e.value)} options={viewOptions} itemTemplate={viewTemplate} />
       </div>
-    </div>
-  );
-
-  const dataViewLayout = (
-    <div className="grid gap-4">
-      <DataView value={quickResults} itemTemplate={gridItemTemplate} layout="grid" />
     </div>
   );
 
@@ -118,13 +84,34 @@ export default function QuickLinks() {
     <Card title={header}>
       <TabView activeIndex={activeTabIndex} onTabChange={(e) => setActiveTabIndex(e.index)}>
         <TabPanel header="Recent">
-          {view === 'grid' ? dataViewLayout : listLayout}
+          <DataTable value={getFilteredData()} globalFilter={globalFilter} dataKey="url"
+            rowClassName={() => view === 'grid' ? 'grid' : ''}
+            bodyClassName={() => view === 'grid' ? 'p-0' : ''}
+            itemTemplate={view === 'grid' ? itemTemplate : undefined}>
+            {view === 'list' && <Column field="title" header="Title" />}
+            {view === 'list' && <Column field="suite" header="Suite" />}
+            {view === 'list' && <Column header="Open" body={(r) => <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">Open <i className="pi pi-external-link" /></a>} />}
+          </DataTable>
         </TabPanel>
         <TabPanel header="Favorites">
-          {view === 'grid' ? dataViewLayout : listLayout}
+        <DataTable value={getFilteredData()} globalFilter={globalFilter} dataKey="url"
+            rowClassName={() => view === 'grid' ? 'grid' : ''}
+            bodyClassName={() => view === 'grid' ? 'p-0' : ''}
+            itemTemplate={view === 'grid' ? itemTemplate : undefined}>
+            {view === 'list' && <Column field="title" header="Title" />}
+            {view === 'list' && <Column field="suite" header="Suite" />}
+            {view === 'list' && <Column header="Open" body={(r) => <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">Open <i className="pi pi-external-link" /></a>} />}
+          </DataTable>
         </TabPanel>
         <TabPanel header="Blog">
-          {view === 'grid' ? dataViewLayout : listLayout}
+        <DataTable value={getFilteredData()} globalFilter={globalFilter} dataKey="url"
+            rowClassName={() => view === 'grid' ? 'grid' : ''}
+            bodyClassName={() => view === 'grid' ? 'p-0' : ''}
+            itemTemplate={view === 'grid' ? itemTemplate : undefined}>
+            {view === 'list' && <Column field="title" header="Title" />}
+            {view === 'list' && <Column field="suite" header="Suite" />}
+            {view === 'list' && <Column header="Open" body={(r) => <a href={r.url} className="inline-flex items-center gap-1 text-blue-600 hover:underline">Open <i className="pi pi-external-link" /></a>} />}
+          </DataTable>
         </TabPanel>
       </TabView>
     </Card>
