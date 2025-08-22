@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { Bell, User } from "lucide-react";
 import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
 
@@ -23,7 +22,7 @@ export default function Banner() {
 
         <div className="flex gap-3 items-center">
           <button className="relative h-10 w-10 flex items-center justify-center border rounded-xl bg-white hover:shadow">
-            <Bell className="h-5 w-5" />
+            <i className="pi pi-bell" />
             <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-red-500" />
           </button>
 
@@ -36,7 +35,7 @@ export default function Banner() {
               className="flex items-center gap-2 px-3 py-2 border rounded-xl bg-white hover:shadow"
             >
               <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-100">
-                <User className="h-5 w-5" />
+                <i className="pi pi-user" />
               </div>
               <span className="text-sm font-medium">Apoorva</span>
             </Button>

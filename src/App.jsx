@@ -4,7 +4,6 @@ import ChatbotSection from "./components/ChatbotSection";
 import SuiteCards from "./components/SuiteCards";
 import Table from "./components/Table";
 import QuickLinks from "./components/QuickLinks";
-import { Star, Clock } from "lucide-react";
 import { FAVORITES } from "./data/favorites";
 import { RECENTS } from "./data/recents";
 
@@ -22,7 +21,7 @@ function App() {
 
         <section>
           <div className="mb-4 flex items-center gap-2">
-            <Star className="h-5 w-5" />
+            <i className="pi pi-star" />
             <h2 className="text-lg font-semibold">My Favorite Pages</h2>
           </div>
           <Table
@@ -46,7 +45,7 @@ function App() {
 
         <section>
           <div className="mb-4 flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+            <i className="pi pi-clock" />
             <h2 className="text-lg font-semibold">Recently Visited</h2>
           </div>
           <Table
